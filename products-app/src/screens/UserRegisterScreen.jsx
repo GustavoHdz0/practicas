@@ -28,7 +28,6 @@ export default function UserRegisterScreen({ navigation }) {
       Alert.alert(t.userCreateAlertOk, t.userCreateOk);
       navigation.replace("Login");
     } catch (err) {
-      // Alert.alert(t.userCreateAlertFail, t.userCreateFail);
       const msg =
         err.response?.data?.error || err.response?.data?.msg || err.message;
       Alert.alert(t.userCreateAlertFail, msg);

@@ -11,6 +11,7 @@ import {
 import { useProducts } from "../contexts/ProductContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import axios from "../services/api";
 
 export default function RegisterProductScreen({ route, navigation }) {
   const { product } = route.params || {};
@@ -35,14 +36,13 @@ export default function RegisterProductScreen({ route, navigation }) {
     }
   };
 
-  const handleAddOrUpdate = () => {
+  const handleAddOrUpdate = async () => {
     if (!name.trim()) return alert(`${t.productNameAlert}`);
     if (isEditing) {
-      updateProduct(product.id, name, description, imageUri);
+      await updateProduct(product._id, name, description, imageUri);
     } else {
-      addProduct(name, description, imageUri);
+      await addProduct(name, description, imageUri);
     }
-
     navigation.goBack();
   };
 
@@ -60,7 +60,8 @@ export default function RegisterProductScreen({ route, navigation }) {
     }
 
     return (
-      <CameraView style={{ flex: 1 }} ref={cameraRef}>
+      <View style={{ flex: 1 }}>
+        <CameraView style={StyleSheet.absoluteFill} ref={cameraRef} />
         <View style={styles.cameraOverlay}>
           <Button
             title={`${t.cameraButtonTakePhoto}`}
@@ -71,7 +72,7 @@ export default function RegisterProductScreen({ route, navigation }) {
             onPress={() => setCameraVisible(false)}
           />
         </View>
-      </CameraView>
+      </View>
     );
   }
 

@@ -9,12 +9,20 @@ import {
 import { useProducts } from "../contexts/ProductContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 import LanguageSelector from "../components/LanguageSelector";
 
 export default function ProductListScreen({ navigation }) {
-  const { products } = useProducts();
+  const { products, fetchProducts } = useProducts();
   const { t } = useLanguage();
   const { logout } = useAuth();
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts();
+    }, [])
+  );
 
   const handleLogout = async () => {
     await logout();
@@ -44,7 +52,7 @@ export default function ProductListScreen({ navigation }) {
       <Text style={styles.title}>{t.title}</Text>
       <FlatList
         data={products}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id}
         renderItem={renderItem}
         contentContainerStyle={{ gap: 15 }}
       />
@@ -105,11 +113,11 @@ const styles = StyleSheet.create({
   },
   topLeftButton: {
     position: "absolute",
-    top: 20,
+    top: 35,
     left: 20,
     zIndex: 999,
   },
   icon: {
-    fontSize: 24,
+    fontSize: 35,
   },
 });

@@ -1,36 +1,42 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import api from "../services/api";
+import axios from "../services/api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   const login = async (username, password) => {
-    const { data } = await api.post("/auth/login", { username, password });
-    await SecureStore.setItemAsync("token", data.token);
-    const res = await api.get("/auth/me");
+    const res = await axios.post("/auth/login", { username, password });
+    await SecureStore.setItemAsync("token", res.data.token);
+    setToken(res.data.token);
     setUser(res.data.user);
   };
 
   const register = async (username, password) => {
-    await api.post("/auth/register", { username, password });
+    await axios.post("/auth/register", { username, password });
     await login(username, password);
   };
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
+    setToken(null);
     setUser(null);
   };
 
   const checkAuth = async () => {
-    const token = await SecureStore.getItemAsync("token");
-    if (token) {
+    const storedToken = await SecureStore.getItemAsync("token");
+    if (storedToken) {
       try {
-        const { data } = await api.get("/auth/me");
+        const { data } = await axios.get("/auth/me", {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        });
+        setToken(storedToken);
         setUser(data.user);
       } catch {
+        setToken(null);
         setUser(null);
       }
     }
@@ -41,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

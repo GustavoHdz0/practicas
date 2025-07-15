@@ -29,7 +29,7 @@ export default function LanguageSelector() {
         style={styles.iconContainer}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.icon}>🌎</Text>
+        <Text style={styles.icon}>🌐</Text>
       </TouchableOpacity>
 
       <Modal
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   iconContainer: {
-    backgroundColor: "#2196F3",
     width: 45,
     height: 45,
     justifyContent: "center",
