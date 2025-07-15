@@ -8,11 +8,18 @@ import {
 } from "react-native";
 import { useProducts } from "../contexts/ProductContext";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import LanguageSelector from "../components/LanguageSelector";
 
 export default function ProductListScreen({ navigation }) {
   const { products } = useProducts();
   const { t } = useLanguage();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigation.replace("Login");
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -30,6 +37,9 @@ export default function ProductListScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.topLeftButton} onPress={handleLogout}>
+        <Text style={styles.icon}>⍈</Text>
+      </TouchableOpacity>
       <LanguageSelector />
       <Text style={styles.title}>{t.title}</Text>
       <FlatList
@@ -92,5 +102,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  topLeftButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    zIndex: 999,
+  },
+  icon: {
+    fontSize: 24,
   },
 });

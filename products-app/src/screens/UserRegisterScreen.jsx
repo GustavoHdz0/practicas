@@ -9,30 +9,36 @@ import {
   Alert,
 } from "react-native";
 import { useLanguage } from "../contexts/LanguageContext";
-import { useAuth } from "../contexts/AuthContext";
 import LanguageSelector from "../components/LanguageSelector";
-import { setItem } from "expo-secure-store";
+import axios from "../services/api";
 
-export default function UserLoginScreen({ navigation }) {
-  const { login } = useAuth();
+export default function UserRegisterScreen({ navigation }) {
   const { t } = useLanguage();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
+    if (!username.trim() || !password.trim()) {
+      Alert.alert(t.userCreateAlertFail, t.productNameAlert);
+      return;
+    }
+
     try {
-      await login(username, password);
-      navigation.replace("Products");
+      await axios.post("/auth/register", { username, password });
+      Alert.alert(t.userCreateAlertOk, t.userCreateOk);
+      navigation.replace("Login");
     } catch (err) {
-      Alert.alert(t.login, t.productNameAlert);
+      // Alert.alert(t.userCreateAlertFail, t.userCreateFail);
+      const msg =
+        err.response?.data?.error || err.response?.data?.msg || err.message;
+      Alert.alert(t.userCreateAlertFail, msg);
     }
   };
 
   return (
     <View style={styles.container}>
       <LanguageSelector />
-      <Text style={styles.title}>{t.login}</Text>
+      <Text style={styles.title}>{t.register}</Text>
 
       <Text style={styles.label}>{t.username}</Text>
       <TextInput
@@ -50,13 +56,13 @@ export default function UserLoginScreen({ navigation }) {
         onChangeText={setPassword}
       />
 
-      <Button title={t.loginButton} onPress={handleLogin} />
+      <Button title={t.registerButton} onPress={handleRegister} />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Register")}
+        onPress={() => navigation.navigate("Login")}
         style={styles.signBtn}
       >
-        <Text style={styles.signLbl}>{t.createUser}</Text>
+        <Text style={styles.signLbl}>{t.haveAccount}</Text>
       </TouchableOpacity>
     </View>
   );

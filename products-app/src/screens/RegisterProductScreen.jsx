@@ -99,10 +99,6 @@ export default function RegisterProductScreen({ route, navigation }) {
         onChangeText={setDescription}
       />
 
-      {/* <View style={{ marginTop: 20 }}>
-        <Button title={`${t.saveButton}`} onPress={handleAddOrUpdate} />
-      </View> */}
-
       <Button
         title={isEditing ? `${t.updateButton}` : `${t.saveButton}`}
         onPress={handleAddOrUpdate}
