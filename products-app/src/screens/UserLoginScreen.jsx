@@ -1,17 +1,9 @@
 import { useState } from "react";
-import {
-  View,
-  Button,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Button, TextInput } from "@react-native-material/core";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import LanguageSelector from "../components/LanguageSelector";
-import { setItem } from "expo-secure-store";
 
 export default function UserLoginScreen({ navigation }) {
   const { login } = useAuth();
@@ -31,26 +23,32 @@ export default function UserLoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <LanguageSelector />
+      <LanguageSelector style={styles.wrapper} />
       <Text style={styles.title}>{t.login}</Text>
 
-      <Text style={styles.label}>{t.username}</Text>
       <TextInput
+        label={t.username}
+        variant="outlined"
         style={styles.input}
-        autoCapitalize="none"
         value={username}
         onChangeText={setUsername}
       />
 
-      <Text style={styles.label}>{t.password}</Text>
       <TextInput
+        label={t.password}
+        variant="outlined"
         style={styles.input}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
 
-      <Button title={t.loginButton} onPress={handleLogin} />
+      <Button
+        color="#673AB7"
+        title={t.loginButton}
+        onPress={handleLogin}
+        style={styles.logBtn}
+      />
 
       <TouchableOpacity
         onPress={() => navigation.navigate("Register")}
@@ -67,28 +65,31 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  wrapper: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+    zIndex: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 30,
+    textAlign: "center",
   },
-  label: {
-    fontWeight: "bold",
-    marginTop: 10,
+  logBtn: {
+    marginTop: 15,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#aaa",
-    borderRadius: 6,
-    padding: 10,
     marginBottom: 10,
   },
   signBtn: {
     marginTop: 20,
   },
   signLbl: {
-    color: "#2196F3",
+    color: "#673AB7",
     textAlign: "center",
   },
 });

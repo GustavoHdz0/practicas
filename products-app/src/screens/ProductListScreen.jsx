@@ -5,7 +5,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { AppBar, FAB } from "@react-native-material/core";
 import { useProducts } from "../contexts/ProductContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -14,6 +17,8 @@ import { useCallback } from "react";
 import LanguageSelector from "../components/LanguageSelector";
 
 export default function ProductListScreen({ navigation }) {
+  const insets = useSafeAreaInsets();
+
   const { products, fetchProducts } = useProducts();
   const { t } = useLanguage();
   const { logout } = useAuth();
@@ -44,46 +49,57 @@ export default function ProductListScreen({ navigation }) {
   );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.topLeftButton} onPress={handleLogout}>
-        <Text style={styles.icon}>⍈</Text>
-      </TouchableOpacity>
-      <LanguageSelector />
-      <Text style={styles.title}>{t.title}</Text>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
+      <StatusBar backgroundColor="#673AB7" barStyle={"dark-content"} />
+      <AppBar
+        title={t.title}
+        centerTitle
+        color="#673AB7"
+        leading={
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.icon}>⍈</Text>
+          </TouchableOpacity>
+        }
+        trailing={<LanguageSelector inline={true} />}
+      />
+
       <FlatList
         data={products}
         keyExtractor={(item) => item._id}
         renderItem={renderItem}
-        contentContainerStyle={{ gap: 15 }}
+        contentContainerStyle={{ gap: 15, paddingVertical: 20 }}
       />
-
-      <TouchableOpacity
+      <FAB
+        variant="extended"
+        label={t.addProdButton}
+        color="#673AB7"
         style={styles.addButton}
         onPress={() => navigation.navigate("RegisterProduct")}
-      >
-        <Text style={styles.addButtonText}>{t.addProdButton}</Text>
-      </TouchableOpacity>
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginVertical: 70,
-  },
   card: {
-    borderWidth: 1,
-    borderColor: "#ccc",
+    marginHorizontal: 20,
     borderRadius: 10,
+    backgroundColor: "#f3f2f7",
     padding: 15,
-    backgroundColor: "#f9f9f9",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 2,
   },
   name: {
     fontWeight: "bold",
@@ -96,28 +112,17 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 150,
-    marginVertical: 10,
+    marginTop: 10,
     borderRadius: 6,
   },
   addButton: {
-    backgroundColor: "#2196F3",
-    padding: 12,
-    borderRadius: 8,
-    marginTop: 20,
-    alignItems: "center",
-  },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  topLeftButton: {
     position: "absolute",
-    top: 35,
-    left: 20,
-    zIndex: 999,
+    right: 20,
+    bottom: 30,
   },
   icon: {
-    fontSize: 35,
+    fontSize: 30,
+    color: "#fff",
+    paddingHorizontal: 10,
   },
 });

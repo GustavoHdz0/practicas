@@ -1,19 +1,14 @@
 import { useState, useRef } from "react";
-import {
-  View,
-  TextInput,
-  Button,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, Alert, StatusBar } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button, TextInput, AppBar } from "@react-native-material/core";
 import { useProducts } from "../contexts/ProductContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { CameraView, useCameraPermissions } from "expo-camera";
-import axios from "../services/api";
 
 export default function RegisterProductScreen({ route, navigation }) {
+  const insets = useSafeAreaInsets();
+
   const { product } = route.params || {};
   const isEditing = !!product;
 
@@ -37,7 +32,7 @@ export default function RegisterProductScreen({ route, navigation }) {
   };
 
   const handleAddOrUpdate = async () => {
-    if (!name.trim()) return alert(`${t.productNameAlert}`);
+    if (!name.trim()) return Alert.alert(t.productNameAlert);
     if (isEditing) {
       await updateProduct(product._id, name, description, imageUri);
     } else {
@@ -52,7 +47,8 @@ export default function RegisterProductScreen({ route, navigation }) {
         <View style={styles.container}>
           <Text>{t.cameraUseMsg}</Text>
           <Button
-            title={`${t.cameraButtonAllow}`}
+            color="#673AB7"
+            title={t.cameraButtonAllow}
             onPress={requestPremission}
           />
         </View>
@@ -64,11 +60,13 @@ export default function RegisterProductScreen({ route, navigation }) {
         <CameraView style={StyleSheet.absoluteFill} ref={cameraRef} />
         <View style={styles.cameraOverlay}>
           <Button
-            title={`${t.cameraButtonTakePhoto}`}
+            color="#673AB7"
+            title={t.cameraButtonTakePhoto}
             onPress={handleTakePhoto}
           />
           <Button
-            title={`${t.cancelButton}`}
+            color="#F44336"
+            title={t.cancelButton}
             onPress={() => setCameraVisible(false)}
           />
         </View>
@@ -77,34 +75,55 @@ export default function RegisterProductScreen({ route, navigation }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>
-        {isEditing ? `${t.editProduct}` : `${t.newProduct}`}
-      </Text>
-
-      <Button
-        title={`${t.cameraButtonTakePhoto}`}
-        onPress={() => setCameraVisible(true)}
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#fff",
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
+      <StatusBar backgroundColor="#673AB7" barStyle={"dark-content"} />
+      <AppBar
+        title={isEditing ? t.editProduct : t.newProduct}
+        titleStyle={{ color: "white" }}
+        style={{ backgroundColor: "#673AB7" }}
       />
-      {imageUri && (
-        <Image source={{ uri: imageUri }} style={styles.imagePreview} />
-      )}
+      <ScrollView contentContainerStyle={styles.container}>
+        <Button
+          color="#673AB7"
+          title={t.cameraButtonTakePhoto}
+          onPress={() => setCameraVisible(true)}
+        />
+        {imageUri && (
+          <Image source={{ uri: imageUri }} style={styles.imagePreview} />
+        )}
 
-      <Text style={styles.label}>{t.nameProduct}</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName} />
+        <TextInput
+          style={styles.input}
+          label={t.nameProduct}
+          variant="outlined"
+          value={name}
+          onChangeText={setName}
+        />
 
-      <Text style={styles.label}>{t.descProduct}</Text>
-      <TextInput
-        style={styles.input}
-        value={description}
-        onChangeText={setDescription}
-      />
+        <TextInput
+          style={styles.input}
+          label={t.descProduct}
+          variant="outlined"
+          value={description}
+          onChangeText={setDescription}
+        />
 
-      <Button
-        title={isEditing ? `${t.updateButton}` : `${t.saveButton}`}
-        onPress={handleAddOrUpdate}
-      />
-    </ScrollView>
+        <Button
+          color="#673AB7"
+          title={isEditing ? t.updateButton : t.saveButton}
+          onPress={handleAddOrUpdate}
+        />
+      </ScrollView>
+    </View>
   );
 }
 
@@ -115,24 +134,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginVertical: 70,
-  },
-  label: {
-    fontWeight: "bold",
-  },
   input: {
-    borderWidth: 1,
-    borderColor: "#aaa",
-    borderRadius: 6,
-    padding: 10,
+    marginBottom: 15,
   },
   imagePreview: {
     width: "100%",
     height: 200,
     marginTop: 10,
+    borderRadius: 6,
   },
   cameraOverlay: {
     position: "absolute",

@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Modal,
   Pressable,
+  StatusBar,
 } from "react-native";
 import { useLanguage } from "../contexts/LanguageContext";
 
-export default function LanguageSelector() {
+export default function LanguageSelector({inline = false}) {
   const { switchLanguage } = useLanguage();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -24,7 +25,8 @@ export default function LanguageSelector() {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, inline && styles.inlineWrapper]}>
+      <StatusBar barStyle={"dark-content"} />
       <TouchableOpacity
         style={styles.iconContainer}
         onPress={() => setModalVisible(true)}
@@ -65,6 +67,11 @@ const styles = StyleSheet.create({
     top: 40,
     right: 20,
     zIndex: 10,
+  },
+  inlineWrapper: {
+    position: "relative",
+    top: 0,
+    right: 0,
   },
   iconContainer: {
     width: 45,

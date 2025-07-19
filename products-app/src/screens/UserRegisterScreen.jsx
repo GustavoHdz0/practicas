@@ -1,13 +1,6 @@
 import { useState } from "react";
-import {
-  View,
-  Button,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Button, TextInput } from "@react-native-material/core";
 import { useLanguage } from "../contexts/LanguageContext";
 import LanguageSelector from "../components/LanguageSelector";
 import axios from "../services/api";
@@ -39,23 +32,29 @@ export default function UserRegisterScreen({ navigation }) {
       <LanguageSelector />
       <Text style={styles.title}>{t.register}</Text>
 
-      <Text style={styles.label}>{t.username}</Text>
       <TextInput
+        label={t.username}
+        variant="outlined"
         style={styles.input}
-        autoCapitalize="none"
         value={username}
         onChangeText={setUsername}
       />
 
-      <Text style={styles.label}>{t.password}</Text>
       <TextInput
+        label={t.password}
+        variant="outlined"
         style={styles.input}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
 
-      <Button title={t.registerButton} onPress={handleRegister} />
+      <Button
+        color="#673AB7"
+        title={t.registerButton}
+        onPress={handleRegister}
+        style={styles.regBtn}
+      />
 
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}
@@ -72,28 +71,25 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 30,
-  },
-  label: {
-    fontWeight: "bold",
-    marginTop: 10,
+    textAlign: "center",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#aaa",
-    borderRadius: 6,
-    padding: 10,
-    marginBottom: 10,
+    marginBottom: 15,
+  },
+  regBtn: {
+    marginTop: 10,
   },
   signBtn: {
     marginTop: 20,
   },
   signLbl: {
-    color: "#2196F3",
+    color: "#673AB7",
     textAlign: "center",
   },
 });
