@@ -31,6 +31,16 @@ export const strings = {
     saveButton: "Guardar producto",
     updateButton: "Actualizar producto",
 
+    // Usuarios
+    updateButton: "Guardar cambios",
+    updateProfileSuccessTitle: "Perfil actualizado",
+    updateProfileSuccessMessage: "Tu perfil se ha actualizado correctamente.",
+    updateProfileFailTitle: "Error al actualizar perfil",
+    updateProfileMissingFields: "Por favor completa todos los campos antes de guardar.",
+    userTitle: "Informacion de perfil",
+    userEditTitle: "Editar informacion de perfil",
+    editButton: "✏️ Editar",
+
     // Cámara
     takePhoto: "Tomar foto",
     cameraUseMsg: "Necesitas permitir el uso de la cámara",
@@ -73,6 +83,16 @@ export const strings = {
     nameRegisterScreen: "Register Product",
     saveButton: "Save product",
     updateButton: "Update product",
+
+    // Usuarios
+    updateButton: "Save changes",
+    updateProfileSuccessTitle: "Profile updated",
+    updateProfileSuccessMessage: "Your profile has been updated successfully.",
+    updateProfileFailTitle: "Error updating profile",
+    updateProfileMissingFields: "Please fill out all fields before saving.",
+    userTitle: "Profile information",
+    userEditTitle: "Edit profile information",
+    editButton: "✏️ Edit",
 
     // Camera
     takePhoto: "Take photo",

@@ -83,7 +83,8 @@ export default function ProductListScreen({ navigation }) {
         label={t.addProdButton}
         color="#673AB7"
         style={styles.addButton}
-        onPress={() => navigation.navigate("RegisterProduct")}
+        //onPress={() => navigation.navigate("RegisterProduct")}
+        onPress={() => navigation.navigate("UserInfo")}
       />
     </View>
   );

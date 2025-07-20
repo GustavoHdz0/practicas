@@ -7,6 +7,9 @@ import UserLoginScreen from "./src/screens/UserLoginScreen";
 import UserRegisterScreen from "./src/screens/UserRegisterScreen";
 import ProductListScreen from "./src/screens/ProductListScreen";
 import RegisterProductScreen from "./src/screens/RegisterProductScreen";
+import UserInfoScreen from "./src/screens/UserInfoScreen";
+import UserEditScreen from "./src/screens/UserEditScreen";
+import { UserProvider } from "./src/contexts/UserContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,30 +17,42 @@ function AppNavigator() {
   const { user } = useAuth();
 
   return (
-    <ProductProvider key={user?._id || "guest"}>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Login"
-          component={UserLoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={UserRegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Products"
-          component={ProductListScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="RegisterProduct"
-          component={RegisterProductScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </ProductProvider>
+    <UserProvider>
+      <ProductProvider key={user?._id || "guest"}>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={UserLoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={UserRegisterScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="UserInfo"
+            component={UserInfoScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="EditUser"
+            component={UserEditScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Products"
+            component={ProductListScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RegisterProduct"
+            component={RegisterProductScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </ProductProvider>
+    </UserProvider>
   );
 }
 
