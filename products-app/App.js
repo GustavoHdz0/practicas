@@ -10,6 +10,7 @@ import RegisterProductScreen from "./src/screens/RegisterProductScreen";
 import UserInfoScreen from "./src/screens/UserInfoScreen";
 import UserEditScreen from "./src/screens/UserEditScreen";
 import { UserProvider } from "./src/contexts/UserContext";
+import MapPickerScreen from "./src/screens/MapPickerScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,11 @@ function AppNavigator() {
             name="EditUser"
             component={UserEditScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MapPicker"
+            component={MapPickerScreen}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="Products"

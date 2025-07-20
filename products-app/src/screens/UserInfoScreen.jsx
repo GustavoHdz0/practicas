@@ -2,16 +2,13 @@ import { View, Text, StyleSheet, Image, StatusBar } from "react-native";
 import { AppBar, FAB } from "@react-native-material/core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLanguage } from "../contexts/LanguageContext";
-import { useAuth } from "../contexts/AuthContext";
 import { useUser } from "../contexts/UserContext";
-import LanguageSelector from "../components/LanguageSelector";
 
 export default function UserInfoScreen({navigation}) {
   const insets = useSafeAreaInsets();
 
   const { userProfile } = useUser();
   const { t } = useLanguage();
-  const { user } = useAuth();
 
   return (
     <View
@@ -43,6 +40,9 @@ export default function UserInfoScreen({navigation}) {
 
           <Text style={styles.label}>{t.phone}</Text>
           <Text style={styles.value}>{userProfile?.phoneNumber}</Text>
+
+          <Text style={styles.label}>{t.address}</Text>
+          <Text style={styles.value}>{userProfile?.address}</Text>
         </View>
       </View>
       <FAB

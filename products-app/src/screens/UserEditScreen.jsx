@@ -1,20 +1,12 @@
 import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Alert,
-  StatusBar,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, Alert, StatusBar } from "react-native";
 import { TextInput, Button, AppBar } from "@react-native-material/core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useUser } from "../contexts/UserContext";
 import axios from "../services/api";
-import LanguageSelector from "../components/LanguageSelector";
 
-export default function UserEditScreen({ navigation }) {
+export default function UserEditScreen({ navigation, route }) {
   const insets = useSafeAreaInsets();
   const { t } = useLanguage();
   const { userProfile, fetchUserProfile } = useUser();
@@ -22,14 +14,22 @@ export default function UserEditScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     if (userProfile) {
       setUsername(userProfile.username || "");
       setEmail(userProfile.email || "");
       setPhoneNumber(userProfile.phoneNumber || "");
+      setAddress(userProfile.address || "");
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    if (route.params?.selectedAddress) {
+      setAddress(route.params.selectedAddress);
+    }
+  }, [route.params]);
 
   const handleSubmit = async () => {
     if (!username.trim() || !email.trim() || !phoneNumber.trim()) {
@@ -42,6 +42,7 @@ export default function UserEditScreen({ navigation }) {
         username,
         email,
         phoneNumber,
+        address,
       });
       await fetchUserProfile();
       Alert.alert(t.updateProfileSuccessTitle, t.updateProfileSuccessMessage);
@@ -65,11 +66,7 @@ export default function UserEditScreen({ navigation }) {
       }}
     >
       <StatusBar backgroundColor="#673AB7" barStyle="dark-content" />
-      <AppBar
-        title={t.userEditTitle}
-        centerTitle
-        color="#673AB7"
-      />
+      <AppBar title={t.userEditTitle} centerTitle color="#673AB7" />
       <View style={styles.centeredContainer}>
         <TextInput
           label={t.username}
@@ -92,6 +89,27 @@ export default function UserEditScreen({ navigation }) {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
+        <TextInput
+          label={t.addressTitle}
+          variant="outlined"
+          style={styles.input}
+          value={address}
+          editable={false}
+          placeholder={t.selectAddress}
+        />
+        <Button
+          title={t.selectOnMap}
+          onPress={() =>
+            navigation.navigate("MapPicker", {
+              from: "edituser",
+              onSelectAddress: (address) => {
+                setAddress(address);
+              },
+            })
+          }
+          style={styles.selectMapButton}
+          color="#9575CD"
+        />
         <Button
           color="#673AB7"
           title={t.updateButton}
@@ -109,16 +127,13 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 30,
-    textAlign: "center",
-  },
   input: {
     marginBottom: 15,
   },
   saveButton: {
     marginTop: 10,
+  },
+  selectMapButton: {
+    marginBottom: 20,
   },
 });

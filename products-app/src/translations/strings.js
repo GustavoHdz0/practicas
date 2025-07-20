@@ -36,7 +36,8 @@ export const strings = {
     updateProfileSuccessTitle: "Perfil actualizado",
     updateProfileSuccessMessage: "Tu perfil se ha actualizado correctamente.",
     updateProfileFailTitle: "Error al actualizar perfil",
-    updateProfileMissingFields: "Por favor completa todos los campos antes de guardar.",
+    updateProfileMissingFields:
+      "Por favor completa todos los campos antes de guardar.",
     userTitle: "Informacion de perfil",
     userEditTitle: "Editar informacion de perfil",
     editButton: "✏️ Editar",
@@ -47,6 +48,15 @@ export const strings = {
     cameraButtonAllow: "Permitir",
     cameraButtonTakePhoto: "Tomar foto",
     cancelButton: "Cancelar",
+
+    // Location
+    address: "Direccion",
+    permissionLocation: "Permiso de ubicacion denegado",
+    addressLbl: "Direccion seleccionada:",
+    addressMsgSelect: "Toca el mapa para elegir una dirección",
+    addressConfirm: "Confirmar direccion",
+    selectedAddress: "Selecciona una direccion",
+    selectOnMap: "Seleccionar en mapa",
 
     // General
     changeLanguage: "Cambiar idioma",
@@ -100,6 +110,15 @@ export const strings = {
     cameraButtonAllow: "Allow",
     cameraButtonTakePhoto: "Take photo",
     cancelButton: "Cancel",
+
+    // Location
+    address: "Address",
+    permissionLocation: "Location permission denied",
+    addressLbl: "Selected address:",
+    addressMsgSelect: "Tap the map to choose an address",
+    addressConfirm: "Confirm Address",
+    selectedAddress: "Select an address",
+    selectOnMap: "Select on map",
 
     // General
     changeLanguage: "Change language",

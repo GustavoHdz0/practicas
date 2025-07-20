@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,13 +14,21 @@ import { useLanguage } from "../contexts/LanguageContext";
 import LanguageSelector from "../components/LanguageSelector";
 import axios from "../services/api";
 
-export default function UserRegisterScreen({ navigation }) {
+export default function UserRegisterScreen({ navigation, route }) {
   const { t } = useLanguage();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userPfp, setUserPfp] = useState(null);
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    if (route.params?.selectedAddress) {
+      setAddress(route.params.selectedAddress);
+    }
+  }, [route.params]);
 
   const handleRegister = async () => {
     if (
@@ -39,6 +47,7 @@ export default function UserRegisterScreen({ navigation }) {
         email,
         password,
         phoneNumber,
+        address,
         userPfp,
       });
       Alert.alert(t.userCreateAlertOk, t.userCreateOk);
@@ -133,6 +142,29 @@ export default function UserRegisterScreen({ navigation }) {
         onChangeText={setPassword}
       />
 
+      <TextInput
+        label={t.addressTitle}
+        variant="outlined"
+        style={styles.input}
+        value={address}
+        editable={false}
+        placeholder={t.selectAddress}
+      />
+
+      <Button
+        title={t.selectOnMap}
+        onPress={() =>
+          navigation.navigate("MapPicker", {
+            from: "register",
+            onSelectAddress: (address) => {
+              setAddress(address);
+            },
+          })
+        }
+        style={styles.selectMapButton}
+        color="#9575CD"
+      />
+
       <Button
         color="#673AB7"
         title={t.registerButton}
@@ -188,6 +220,9 @@ const styles = StyleSheet.create({
   },
   signBtn: {
     marginTop: 20,
+  },
+  selectMapButton: {
+    marginBottom: 20,
   },
   signLbl: {
     color: "#673AB7",
