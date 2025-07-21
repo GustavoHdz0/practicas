@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Alert, StatusBar } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Image,
+  Text,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 import { TextInput, Button, AppBar } from "@react-native-material/core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -14,6 +24,7 @@ export default function UserEditScreen({ navigation, route }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [userPfp, setUserPfp] = useState(null);
   const [address, setAddress] = useState("");
 
   useEffect(() => {
@@ -21,6 +32,7 @@ export default function UserEditScreen({ navigation, route }) {
       setUsername(userProfile.username || "");
       setEmail(userProfile.email || "");
       setPhoneNumber(userProfile.phoneNumber || "");
+      setUserPfp(userProfile.userPfp || "");
       setAddress(userProfile.address || "");
     }
   }, [userProfile]);
@@ -43,6 +55,7 @@ export default function UserEditScreen({ navigation, route }) {
         email,
         phoneNumber,
         address,
+        userPfp,
       });
       await fetchUserProfile();
       Alert.alert(t.updateProfileSuccessTitle, t.updateProfileSuccessMessage);
@@ -52,6 +65,41 @@ export default function UserEditScreen({ navigation, route }) {
         err.response?.data?.error || err.response?.data?.msg || err.message;
       Alert.alert(t.updateProfileFailTitle, msg);
     }
+  };
+
+  const pickImage = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert(t.cameraUseMsg);
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const uri = result.assets[0].uri;
+      const compressedBase64 = await compressImage(uri);
+      const imageUri = `data:image/jpeg;base64,${compressedBase64}`;
+      setUserPfp(imageUri);
+    }
+  };
+
+  const compressImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }],
+      {
+        compress: 0.6,
+        format: ImageManipulator.SaveFormat.JPEG,
+        base64: true,
+      }
+    );
+    return manipResult.base64;
   };
 
   return (
@@ -67,7 +115,21 @@ export default function UserEditScreen({ navigation, route }) {
     >
       <StatusBar backgroundColor="#673AB7" barStyle="dark-content" />
       <AppBar title={t.userEditTitle} centerTitle color="#673AB7" />
+
       <View style={styles.centeredContainer}>
+
+        <TouchableOpacity style={styles.avatarContainer} onPress={pickImage}>
+          {userPfp ? (
+            <Image source={{ uri: userPfp }} style={styles.avatar} />
+          ) : (
+            <View style={styles.avatarPlaceholder}>
+              <Text style={{ fontSize: 12, color: "#aaa" }}>
+                {t.uploadPhoto}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
         <TextInput
           label={t.username}
           variant="outlined"
@@ -75,6 +137,7 @@ export default function UserEditScreen({ navigation, route }) {
           value={username}
           onChangeText={setUsername}
         />
+
         <TextInput
           label={t.mail}
           variant="outlined"
@@ -82,6 +145,7 @@ export default function UserEditScreen({ navigation, route }) {
           value={email}
           onChangeText={setEmail}
         />
+
         <TextInput
           label={t.phone}
           variant="outlined"
@@ -89,6 +153,7 @@ export default function UserEditScreen({ navigation, route }) {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
+
         <TextInput
           label={t.addressTitle}
           variant="outlined"
@@ -97,6 +162,7 @@ export default function UserEditScreen({ navigation, route }) {
           editable={false}
           placeholder={t.selectAddress}
         />
+
         <Button
           title={t.selectOnMap}
           onPress={() =>
@@ -110,6 +176,7 @@ export default function UserEditScreen({ navigation, route }) {
           style={styles.selectMapButton}
           color="#9575CD"
         />
+
         <Button
           color="#673AB7"
           title={t.updateButton}
@@ -126,6 +193,23 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     justifyContent: "center",
+  },
+  avatarContainer: {
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  avatarPlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     marginBottom: 15,
