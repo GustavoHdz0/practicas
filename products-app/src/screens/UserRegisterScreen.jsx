@@ -173,7 +173,7 @@ export default function UserRegisterScreen({ navigation, route }) {
       />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.goBack()}
         style={styles.signBtn}
       >
         <Text style={styles.signLbl}>{t.haveAccount}</Text>

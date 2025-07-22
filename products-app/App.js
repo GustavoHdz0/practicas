@@ -9,6 +9,7 @@ import DrawerNavigator from "./src/navigations/DrawerNavigator";
 import UserLoginScreen from "./src/screens/UserLoginScreen";
 import UserRegisterScreen from "./src/screens/UserRegisterScreen";
 import MapPickerScreen from "./src/screens/MapPickerScreen";
+import RecoverPasswordScreen from "./src/screens/RecoverPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,16 @@ function AppNavigator() {
           component={UserRegisterScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="MapPicker" component={MapPickerScreen} options={{headerShown: false}}/>
+        <Stack.Screen
+          name="RecoverPass"
+          component={RecoverPasswordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MapPicker"
+          component={MapPickerScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     );
   }

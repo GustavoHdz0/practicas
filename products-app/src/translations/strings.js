@@ -42,6 +42,12 @@ export const strings = {
     userTitle: "Informacion de perfil",
     userEditTitle: "Editar informacion de perfil",
     editButton: "✏️ Editar",
+    recover: "Recuperar contraseña",
+    recoverDesc:
+      "Ingrese su correo electronico para recibir una contraseña temporal",
+    recoverLogin: "Volver al inicio de sesion",
+    mailError: "Error de correo",
+    mailErrorMsg: "Por favor ingrese un correo",
 
     // Cámara
     takePhoto: "Tomar foto",
@@ -105,6 +111,11 @@ export const strings = {
     userTitle: "Profile information",
     userEditTitle: "Edit profile information",
     editButton: "✏️ Edit",
+    recover: "Recover password",
+    recoverDesc: "Enter your email address to receive a temporary password.",
+    recoverLogin: "Return to login",
+    mailError: "Email error",
+    mailErroMsg: "Please enter an email",
 
     // Camera
     takePhoto: "Take photo",

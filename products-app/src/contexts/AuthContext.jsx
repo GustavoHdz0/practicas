@@ -8,9 +8,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  const login = async (username, password) => {
+  const login = async (email, password) => {
     try {
-      const res = await axios.post("/auth/login", { username, password });
+      const res = await axios.post("/auth/login", { email, password });
       const token = res.data.token;
       await SecureStore.setItemAsync("token", token);
       setToken(token);

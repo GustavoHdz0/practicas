@@ -9,14 +9,16 @@ export default function UserLoginScreen({ navigation }) {
   const { login } = useAuth();
   const { t } = useLanguage();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      await login(username, password);
+      await login(email, password);
     } catch (err) {
-      Alert.alert(t.login, t.productNameAlert);
+      // Alert.alert(t.login, t.productNameAlert);
+      const msg = err.response?.data?.msg || err.message || "Error desconocido";
+      Alert.alert(t.login, msg);
     }
   };
 
@@ -26,11 +28,11 @@ export default function UserLoginScreen({ navigation }) {
       <Text style={styles.title}>{t.login}</Text>
 
       <TextInput
-        label={t.username}
+        label={t.mail}
         variant="outlined"
         style={styles.input}
-        value={username}
-        onChangeText={setUsername}
+        value={email}
+        onChangeText={setEmail}
       />
 
       <TextInput
@@ -54,6 +56,13 @@ export default function UserLoginScreen({ navigation }) {
         style={styles.signBtn}
       >
         <Text style={styles.signLbl}>{t.createUser}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RecoverPass")}
+        style={styles.signBtn}
+      >
+        <Text style={styles.signLbl}>{t.recover}</Text>
       </TouchableOpacity>
     </View>
   );
