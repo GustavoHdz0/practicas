@@ -15,7 +15,6 @@ export default function UserLoginScreen({ navigation }) {
   const handleLogin = async () => {
     try {
       await login(username, password);
-      navigation.replace("Products");
     } catch (err) {
       Alert.alert(t.login, t.productNameAlert);
     }

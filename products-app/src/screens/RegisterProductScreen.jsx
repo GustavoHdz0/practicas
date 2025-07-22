@@ -1,5 +1,14 @@
 import { useState, useRef } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, Alert, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button, TextInput, AppBar } from "@react-native-material/core";
 import { useProducts } from "../contexts/ProductContext";
@@ -88,8 +97,13 @@ export default function RegisterProductScreen({ route, navigation }) {
       <StatusBar backgroundColor="#673AB7" barStyle={"dark-content"} />
       <AppBar
         title={isEditing ? t.editProduct : t.newProduct}
-        titleStyle={{ color: "white" }}
-        style={{ backgroundColor: "#673AB7" }}
+        centerTitle
+        color="#673AB7"
+        leading={
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.icon}>く</Text>
+          </TouchableOpacity>
+        }
       />
       <ScrollView contentContainerStyle={styles.container}>
         <Button
@@ -151,5 +165,10 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     gap: 10,
+  },
+  icon: {
+    fontSize: 30,
+    color: "#fff",
+    paddingHorizontal: 10,
   },
 });

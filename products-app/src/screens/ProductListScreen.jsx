@@ -31,7 +31,6 @@ export default function ProductListScreen({ navigation }) {
 
   const handleLogout = async () => {
     await logout();
-    navigation.replace("Login");
   };
 
   const renderItem = ({ item }) => (
@@ -65,8 +64,8 @@ export default function ProductListScreen({ navigation }) {
         centerTitle
         color="#673AB7"
         leading={
-          <TouchableOpacity onPress={handleLogout}>
-            <Text style={styles.icon}>⍈</Text>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Text style={styles.icon}>☰</Text>
           </TouchableOpacity>
         }
         trailing={<LanguageSelector inline={true} />}
@@ -83,8 +82,8 @@ export default function ProductListScreen({ navigation }) {
         label={t.addProdButton}
         color="#673AB7"
         style={styles.addButton}
-        //onPress={() => navigation.navigate("RegisterProduct")}
-        onPress={() => navigation.navigate("UserInfo")}
+        onPress={() => navigation.navigate("RegisterProduct")}
+        //onPress={() => navigation.navigate("UserInfo")}
       />
     </View>
   );

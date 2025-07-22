@@ -2,6 +2,7 @@ export const strings = {
   es: {
     // Autenticación
     login: "Inicio de sesión",
+    logout: "Cerrar sesión",
     register: "Registrarse",
     username: "Nombre de usuario",
     mail: "Correo Electroico",
@@ -56,7 +57,7 @@ export const strings = {
     addressMsgSelect: "Toca el mapa para elegir una dirección",
     addressConfirm: "Confirmar direccion",
     selectedAddress: "Selecciona una direccion",
-    selectOnMap: "Seleccionar en mapa",
+    selectOnMap: "Seleccionar direccion",
 
     // General
     changeLanguage: "Cambiar idioma",
@@ -65,6 +66,7 @@ export const strings = {
   en: {
     // Auth
     login: "Log in",
+    logout: "Log out",
     register: "Register",
     username: "Username",
     mail: "Email",

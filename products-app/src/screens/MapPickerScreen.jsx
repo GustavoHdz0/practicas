@@ -67,7 +67,7 @@ export default function MapPickerScreen({ navigation, route }) {
       <MapView style={styles.map} region={region} onPress={handleMapPress}>
         {selectedLocation && <Marker coordinate={selectedLocation} />}
       </MapView>
-      <View style={styles.addresBox}>
+      <View style={styles.addressBox}>
         <Text>{t.addressLbl}</Text>
         <Text>{address || t.addressMsgSelect}</Text>
         <Button

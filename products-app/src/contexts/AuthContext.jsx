@@ -9,10 +9,20 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
   const login = async (username, password) => {
-    const res = await axios.post("/auth/login", { username, password });
-    await SecureStore.setItemAsync("token", res.data.token);
-    setToken(res.data.token);
-    setUser(res.data.user);
+    try {
+      const res = await axios.post("/auth/login", { username, password });
+      const token = res.data.token;
+      await SecureStore.setItemAsync("token", token);
+      setToken(token);
+
+      const userRes = await axios.get("/auth/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(userRes.data.user);
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+    }
   };
 
   const register = async ({

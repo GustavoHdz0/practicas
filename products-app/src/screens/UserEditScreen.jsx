@@ -114,10 +114,18 @@ export default function UserEditScreen({ navigation, route }) {
       }}
     >
       <StatusBar backgroundColor="#673AB7" barStyle="dark-content" />
-      <AppBar title={t.userEditTitle} centerTitle color="#673AB7" />
+      <AppBar
+        title={t.userEditTitle}
+        centerTitle
+        color="#673AB7"
+        leading={
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.icon}>く</Text>
+          </TouchableOpacity>
+        }
+      />
 
       <View style={styles.centeredContainer}>
-
         <TouchableOpacity style={styles.avatarContainer} onPress={pickImage}>
           {userPfp ? (
             <Image source={{ uri: userPfp }} style={styles.avatar} />
@@ -219,5 +227,11 @@ const styles = StyleSheet.create({
   },
   selectMapButton: {
     marginBottom: 20,
+  },
+
+  icon: {
+    fontSize: 30,
+    color: "#fff",
+    paddingHorizontal: 10,
   },
 });

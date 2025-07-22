@@ -1,10 +1,17 @@
-import { View, Text, StyleSheet, Image, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 import { AppBar, FAB } from "@react-native-material/core";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useUser } from "../contexts/UserContext";
 
-export default function UserInfoScreen({navigation}) {
+export default function UserInfoScreen({ navigation }) {
   const insets = useSafeAreaInsets();
 
   const { userProfile } = useUser();
@@ -26,6 +33,11 @@ export default function UserInfoScreen({navigation}) {
         title={t.userTitle}
         centerTitle
         color="#673AB7"
+        leading={
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Text style={styles.icon}>☰</Text>
+          </TouchableOpacity>
+        }
       />
       <View style={styles.centeredContainer}>
         {userProfile?.userPfp && (
@@ -87,5 +99,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 20,
     bottom: 30,
+  },
+  icon: {
+    fontSize: 30,
+    color: "#fff",
+    paddingHorizontal: 10,
   },
 });
